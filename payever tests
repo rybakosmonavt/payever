@@ -1,0 +1,122 @@
+describe('payever tests', () => {
+  const baseUrl = "https://commerceos.staging.devpayever.com/registration/"
+  let path1 = "fashion";
+  let path2 = "santander";
+  let firstName = "TestName";
+  let lastName = "TestLastName";
+  let email1 = "test@fashionemail.com";
+  let email2 = "test@satandermail.com";
+  let password = "Qwerty123!"
+  let companyName = "Alpha Co."
+  let phoneNumber = "7777777777"
+  let vatNumber = "123"
+
+  it('Test case 1', () => {
+    cy.visit(baseUrl + path1);
+    cy.wait(4000);
+    cy.url().should('include', '/fashion');
+
+    //Fill out the user information
+    cy.get('peb-form-field-input.ng-tns-c170-1 > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('input[formcontrolname="firstName"]').type(firstName);
+
+    cy.get('peb-form-field-input.ng-tns-c170-2 > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('input[formcontrolname="lastName"]').type(lastName);
+
+    cy.get('peb-form-field-input.ng-tns-c170-3 > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('input[formcontrolname="email"]').type(email1);
+
+    cy.get('peb-form-field-input.ng-tns-c170-4 > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('input[formcontrolname="password"]').type(password);
+
+    cy.get('peb-form-field-input.ng-tns-c170-5 > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('input[formcontrolname="confirmPass"]').type(password);
+
+    cy.get('[type="submit"]').click();
+    cy.wait(4000);
+
+    //Fill out the business information
+    cy.get('.ng-tns-c212-7.ng-valid > .label-select-wrapper > .input').click();
+    cy.get('.peb-select-options-container').should('contain.text', 'Solo Entrepreneur').click();
+
+    cy.get('peb-form-field-input.ng-tns-c170-8 > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('input[formcontrolname="name"]').type(companyName);
+    
+    cy.get('peb-form-field-input.ng-tns-c170-12 > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('input[formcontrolname="phoneNumber"]').type(phoneNumber);
+
+    cy.wait(500);
+    cy.get('[type="submit"]').click();
+    cy.wait(10000);
+
+    //Greetings and page validation
+    cy.url().should('include', '/info/overview');
+    cy.get('.welcome-screen-content-button').click();
+
+    //Apps validation
+    cy.get('.icons__title').contains('Checkout');
+    cy.get('.icons__title').contains('Transactions');
+    cy.get('.icons__title').contains('Connect');
+    cy.get('.icons__title').contains('Products');
+    cy.get('.icons__title').contains('Shop');
+    cy.get('.icons__title').contains('Message'); //Test will fail because there is no 'Message' app showing
+    cy.get('.icons__title').contains('Settings');
+  })
+
+
+  it('Test case 2', () => {
+    cy.visit(baseUrl + path2);
+    cy.wait(4000);
+    cy.url().should('include', '/santander');
+
+    //Fill out the user information
+    cy.get('peb-form-field-input.ng-tns-c170-1 > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('input[formcontrolname="firstName"]').type(firstName);
+
+    cy.get('peb-form-field-input.ng-tns-c170-2 > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('input[formcontrolname="lastName"]').type(lastName);
+
+    cy.get('peb-form-field-input.ng-tns-c170-3 > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('input[formcontrolname="email"]').type(email2);
+
+    cy.get('peb-form-field-input.ng-tns-c170-4 > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('input[formcontrolname="password"]').type(password);
+
+    cy.get('peb-form-field-input.ng-tns-c170-5 > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('input[formcontrolname="confirmPass"]').type(password);
+
+    cy.get('[type="submit"]').click();
+    cy.wait(4000);
+
+    //Fill out the business information
+    cy.get('.ng-tns-c212-7.ng-valid > .label-select-wrapper > .input').click();
+    cy.get('.peb-select-options-container').should('contain.text', 'Solo Entrepreneur').click();
+
+    cy.get('peb-form-field-input.ng-tns-c170-8 > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('.input-field > .ng-tns-c170-8').type(companyName);
+    
+    cy.get('peb-form-field-input.ng-tns-c170-11 > .label-input-content-wrapper > .label-container').click();
+    cy.get('#mat-option-5').click();
+
+    cy.get('.d-block > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('.input-field > .ng-star-inserted').type(phoneNumber);
+
+    cy.get('peb-form-field-input.ng-tns-c170-14 > .label-input-content-wrapper > .label-container > .label-text').click();
+    cy.get('.input-field > .ng-tns-c170-14').type(vatNumber);
+
+    cy.wait(500);
+    cy.get('[type="submit"]').click();
+    cy.wait(10000);
+
+    //Greetings and page validation
+    cy.url().should('include', '/info/overview');
+    cy.get('.welcome-screen-content-button').click();
+
+    //Apps validation
+    cy.get('.icons__title').contains('Checkout');
+    cy.get('.icons__title').contains('Transactions');
+    cy.get('.icons__title').contains('Connect');
+    cy.get('.icons__title').contains('Point of Sale');
+    cy.get('.icons__title').contains('Settings');
+  })
+})
